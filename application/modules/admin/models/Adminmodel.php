@@ -160,8 +160,8 @@ class AdminModel extends CI_Model
         $row = $res->row_array();
         $this->db->trans_start();
         $this->db->query('DELETE FROM languages WHERE id = ' . $this->db->escape($id));
-        $this->db->query('DELETE FROM translations WHERE abbr = ' . $row['abbr']);
-        $this->db->query('DELETE FROM cookie_law_translations WHERE abbr = ' . $row['abbr']);
+        $this->db->query("DELETE FROM translations WHERE abbr =  '$row'");
+        $this->db->query("DELETE FROM cookie_law_translations WHERE abbr = '$row'");
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE) {
             return false;
@@ -715,6 +715,12 @@ class AdminModel extends CI_Model
         $query = $this->db->query("SELECT value FROM value_store WHERE thekey = '$key'");
         $img = $query->row_array();
         return $img['value'];
+    }
+	public function getTemplate()
+    {
+        $query = $this->db->query("SELECT value FROM value_store WHERE thekey = 'template'");
+        $templ = $query->row_array();
+        return $templ['value'];
     }
 
     public function getSuscribedEmails($limit, $page)
